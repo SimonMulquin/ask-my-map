@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Map from "../components/Map";
+import { Props } from "../types";
 
-export default function Home() {
+export default function Home({ markers }: Props) {
   return (
     <div>
       <Head>
@@ -10,8 +11,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Map />
+        <Map markers={markers} />
       </main>
     </div>
   );
 }
+
+export const getServerSideProps = async () => {
+  const res = await fetch("http://localhost:1337/api/markers");
+  const data = await res.json();
+
+  const markers = data?.data || [];
+  return { props: { markers } };
+};

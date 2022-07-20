@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "markers",
+  "info": {
+    "singularName": "marker",
+    "pluralName": "markers",
+    "displayName": "Marker",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 30
+    },
+    "lat": {
+      "type": "decimal"
+    },
+    "lng": {
+      "type": "decimal"
+    }
+  }
+}

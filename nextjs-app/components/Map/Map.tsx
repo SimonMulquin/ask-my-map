@@ -1,12 +1,11 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
-import styles from "./Map.module.css";
-
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
-const DEFAULT_CENTER = { lat: 41.84011314251885, lng: 23.47760643594089 };
+import styles from "./Map.module.css";
+import { MarkerData, Props } from "../../types";
 
 const icon = L.icon({
   iconRetinaUrl: iconRetinaUrl.src,
@@ -16,16 +15,31 @@ const icon = L.icon({
   iconAnchor: [16, 48],
 });
 
-const Map = () => {
+const getMarkerPosition = ({ attributes }: MarkerData): [number, number] => [
+  attributes.lat,
+  attributes.lng,
+];
+
+const Map = ({ markers }: Props) => {
   return (
-    <MapContainer className={styles.map} zoom={15} center={DEFAULT_CENTER}>
+    <MapContainer
+      className={styles.map}
+      zoom={15}
+      center={getMarkerPosition(markers[0])}
+    >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker icon={icon} position={DEFAULT_CENTER}>
-        <Popup>Four leaf clover coliving ❤️</Popup>
-      </Marker>
+      {markers.map(marker => (
+        <Marker
+          key={marker.id}
+          icon={icon}
+          position={getMarkerPosition(marker)}
+        >
+          <Popup>{marker.attributes.title}</Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 };
